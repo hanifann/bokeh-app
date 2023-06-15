@@ -1,0 +1,14 @@
+FROM python
+
+RUN pip install --upgrade pip \
+    && pip install --pre -i https://pypi.anaconda.org/bokeh/channel/dev/simple --extra-index-url https://pypi.python.org/simple/ bokeh==2.4.2 \
+    && pip install pandas && rm -rf ~/.cache/pip
+
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENV ORIGIN="127.0.0.1:5100" PORT="5100" PREFIX="" LOG_LEVEL="info"
+
+COPY ./app /app
+
+ENTRYPOINT ["./entrypoint.sh"]
